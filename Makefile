@@ -40,13 +40,13 @@ export HEADER
 ################################################################################
 
 define PROGRESS_BAR
-    @TOTAL_STEPS=20; CURRENT_STEP=0; \
-    while [ $$CURRENT_STEP -lt $$TOTAL_STEPS ]; do \
-        CURRENT_STEP=$$(($$CURRENT_STEP + 1)); \
-        echo -n "$(GREEN)▰$(DEFAULT)"; \
-        sleep 0.01; \
-    done; \
-    echo " ✔️";
+	@TOTAL_STEPS=20; CURRENT_STEP=0; \
+	while [ $$CURRENT_STEP -lt $$TOTAL_STEPS ]; do \
+		CURRENT_STEP=$$(($$CURRENT_STEP + 1)); \
+		echo -n "$(GREEN)▰$(DEFAULT)"; \
+		sleep 0.01; \
+	done; \
+	echo " ✔️";
 endef
 
 ################################################################################
@@ -104,8 +104,9 @@ $(OBJ)%.o:		$(SRC)%.c
 # Rule for creating the executable
 $(NAME):		$(OBJS)
 				@make all --no-print-directory -C $(MYLIB_DIR)
-				@echo "$(WHITE)Building $(YELLOW)mlx $(CYAN)library $(DEFAULT)..."
-				@make all --no-print-directory -C $(MLX_DIR)
+				@echo -n "\n🛠️  $(WHITE)Building $(CYAN)libmlx.a $(DEFAULT)library\t\t\t"
+				@make all --no-print-directory -C $(MLX_DIR) > /dev/null 2>&1
+				$(PROGRESS_BAR)
 				@echo -n "\n🔗 $(WHITE)Linking $(CYAN)$(NAME)$(DEFAULT) executable\t\t\t"
 				@$(CC) $(CFLAGS) $(OBJS) $(MYLIB) $(MLX) -o $(NAME)
 				$(PROGRESS_BAR)
@@ -117,27 +118,44 @@ all:			$(NAME)
 # Bonus rule
 bonus:			$(OBJS_BONUS)
 				@make all --no-print-directory -C $(MYLIB_DIR)
+				@echo -n "\n🛠️  $(WHITE)Building $(CYAN)libmlx.a $(DEFAULT)library\t\t\t"
+				@make all --no-print-directory -C $(MLX_DIR) > /dev/null 2>&1
+				$(PROGRESS_BAR)
 				@echo -n "\n🔗 $(WHITE)Linking $(CYAN)$(NAME_BONUS)$(DEFAULT) executable\t\t"
-				@$(CC) $(CFLAGS) $(OBJS_BONUS) $(MYLIB) -o $(NAME_BONUS)
+				@$(CC) $(CFLAGS) $(OBJS_BONUS) $(MYLIB) $(MLX) -o $(NAME_BONUS)
 				$(PROGRESS_BAR)
 				@echo "\n$$HEADER"
 
 # Rule for cleaning up object files
 clean:
 				@make clean --no-print-directory -C $(MYLIB_DIR)
-				@echo -n "\n🧹 $(RED)Cleaning up$(DEFAULT) project object files\t\t"
+				@echo -n "\n🧹 $(RED)Cleaning up $(CYAN)libmlx.a $(DEFAULT)object files\t\t"
+				@make clean --no-print-directory -C $(MLX_DIR) > /dev/null 2>&1
+				$(PROGRESS_BAR)
+				@echo -n "\n🧹 $(RED)Cleaning up $(CYAN)project $(DEFAULT)object files\t\t"
 				@$(RM) -r $(OBJ)
 				$(PROGRESS_BAR)
 				@echo ""
 
 # Full clean rule (objects files, executable and libraries)
 fclean:
-				@make fclean --no-print-directory -C $(MYLIB_DIR)
-				@echo -n "\n🧹 $(RED)Cleaning up$(DEFAULT) $(CYAN)$(NAME)$(DEFAULT) object files\t\t"
+				@echo -n "\n🧹 $(RED)Cleaning up $(DEFAULT)all object files\t\t\t"
+				@make fclean --no-print-directory -C $(MYLIB_DIR) > /dev/null 2>&1
+				@make clean --no-print-directory -C $(MLX_DIR) > /dev/null 2>&1
 				@$(RM) -r $(OBJ)
 				$(PROGRESS_BAR)
-				@echo -n "\n🗑️  $(RED)Deleting $(CYAN)$(NAME)$(DEFAULT) executable\t\t"
-				@$(RM) $(NAME) $(NAME_BONUS)
+				@echo -n "\n🗑️  $(RED)Deleting $(CYAN)mylib.a$(DEFAULT) library\t\t\t"
+				$(PROGRESS_BAR)
+				@echo -n "\n🗑️  $(RED)Deleting $(CYAN)libmlx.a $(DEFAULT)library\t\t\t"
+				$(PROGRESS_BAR)
+				@if [ -f $(NAME) ]; then \
+					echo -n "\n🗑️  $(RED)Deleting $(CYAN)$(NAME)$(DEFAULT) executable\t\t\t"; \
+					$(RM) $(NAME); \
+				fi
+				@if [ -f $(NAME_BONUS) ]; then \
+					echo -n "\n🗑️  $(RED)Deleting $(CYAN)$(NAME_BONUS)$(DEFAULT) executable\t\t"; \
+					$(RM) $(NAME_BONUS); \
+				fi
 				$(PROGRESS_BAR)
 				@echo ""
 
@@ -146,11 +164,12 @@ re:				fclean all
 
 # Rule to compile the program with debugging flags
 debug:			$(OBJS)
-				@make all --no-print-directory -C $(MYLIB_DIR)
-				@echo -n "\n🔗 $(CYAN)Compiling in debug mode $(DEFAULT)\t\t\t"
-				@$(CC) $(CFLAGS) $(OBJS) $(MYLIB) -o $(NAME) -g3 -fsanitize=address
+				@echo -n "\n🔗 Compiling in $(CYAN)debug$(DEFAULT) mode\t\t\t"
+				@make all --no-print-directory -C $(MYLIB_DIR) > /dev/null 2>&1
+				@make all --no-print-directory -C $(MLX_DIR) > /dev/null 2>&1
+				@$(CC) $(CFLAGS) $(OBJS) $(MYLIB) $(MLX) -o $(NAME) -g3 -fsanitize=address
 				$(PROGRESS_BAR)
-				@echo "$$HEADER"
+				@echo "\n$$HEADER"
 
 # Rule to display help
 help:
@@ -159,7 +178,7 @@ help:
 				@echo "$(CYAN)clean$(DEFAULT)		- Clean up object files"
 				@echo "$(CYAN)fclean$(DEFAULT)		- Clean up all object files and executables"
 				@echo "$(CYAN)re$(DEFAULT)		- Rebuild the entire project"
-				@echo "$(CYAN)debug$(DEFAULT)		- Run the program with debugging flags -g3\n"
+				@echo "$(CYAN)debug$(DEFAULT)		- Run the program with debugging flags -g3 -fsanitize=address\n"
 
 # Rule to ensure that these targets are always executed as intended, even if there are files with the same name
 .PHONY:			all bonus clean fclean re debug help
