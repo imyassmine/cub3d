@@ -78,8 +78,8 @@ MYLIB =			-L $(MYLIB_DIR) -l:my_lib.a
 MLX =			-L $(MLX_DIR) -l:libmlx.a -lXext -lX11 -lm
 
 # Source files
-SRCX =			$(PARSING)parsing.c \
-				$(EXEC)exec.c \
+SRCX =			$(EXEC)initialization.c \
+				$(EXEC)events.c \
 				$(SRC)utils.c \
 
 SRCS =			$(SRCX) \

@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 19:03:50 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/23 19:59:40 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/26 22:30:51 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,7 @@
 /*                                  INCLUDES                                  */
 /* -------------------------------------------------------------------------- */
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdbool.h>
-# include <errno.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
-# include <dirent.h>
-# include "get_next_line_bonus.h"
+# include "mlx.h"
 # include "gc.h"
 # include <fnmatch.h>
 # include <termios.h>
@@ -71,6 +61,26 @@
 /*                                   ENUMS                                    */
 /* -------------------------------------------------------------------------- */
 
+// EVENT TYPES ENUM
+typedef enum e_event_type
+{
+	KEY_PRESS = 2,
+	KEY_RELEASE = 3,
+	BUTTON_PRESS = 4,
+	BUTTON_RELEASE = 5,
+	DESTROY_NOTIFY = 17
+}	t_event_type;
+
+// EVENT MASKS ENUM
+typedef enum e_event_mask
+{
+	KEYPRESSMASK = 1,
+	KEYRELEASEMASK = 2,
+	BUTTONPRESSMASK = 4,
+	BUTTONRELEASEMASK = 8,
+	STRUCNOTIFYMASK = 131072
+}	t_event_mask;
+
 // KEY CODES ENUM
 typedef enum e_keys
 {
@@ -83,7 +93,7 @@ typedef enum e_keys
 	R = 114,
 	S = 115,
 	W = 119,
-	KEY_ESC = 65307,
+	ESC = 65307,
 	LEFT = 65361,
 	UP = 65362,
 	RIGHT = 65363,
@@ -95,23 +105,30 @@ typedef enum e_keys
 /*                                 STRUCTURES                                 */
 /* -------------------------------------------------------------------------- */
 
-// IMAGE STRUCTURE
+// IMAGE BUFFER STRUCTURE
 typedef struct s_image
 {
 	void				*ptr;
 	char				*addr;
-	int					bpp;
-	int					size_line;
-	int					endian;
+	int					bpp;			// bits per pixel
+	int					line_length;	// bytes per line
+	int					endian;			// byte-order (0 or 1)
 	int					width;
 	int					height;
 }	t_image;
 
-// DATA STRUCTURE
+// GAME CONTEXT STRUCTURE
 typedef struct s_cub
 {
+	void				*mlx;
+	void				*win;
 	t_image				img;
 	t_gc				gc;
+	int					width;
+	int					height;
+	int					floor_color;
+	int					ceiling_color;
+	char				**map;			// 2D array representing the map
 }	t_cub;
 
 /* -------------------------------------------------------------------------- */
@@ -119,12 +136,18 @@ typedef struct s_cub
 /* -------------------------------------------------------------------------- */
 
 /* ----------------------------- Initialization ----------------------------- */
-void	data_init(int argc, char **argv, t_cub *data);
+void	init_game(t_cub *data);
 
 /* -------------------------------- Parser ---------------------------------- */
 
 /* ------------------------------- Executor --------------------------------- */
 
-/* ------------------------------- Utilities -------------------------------- */
+// EVENTS HANDLERS
+int		key_press(int keycode, t_cub *data);
+int		close_window(t_cub *data);
 
+/* ------------------------------- Utilities -------------------------------- */
+void	print_help(void);
+void	clean_exit(int status, t_cub *data);
+void	error(const char *error_msg, int status, t_cub *game);
 #endif
