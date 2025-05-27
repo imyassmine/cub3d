@@ -1,0 +1,6 @@
+# Ignorer les objets et binaires
+*.o
+cub3d
+
+# Ignorer le dossier libft
+libft/
