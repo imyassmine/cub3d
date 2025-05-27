@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 19:03:50 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/26 22:30:51 by yaabdall         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -18,10 +6,13 @@
 /* -------------------------------------------------------------------------- */
 
 # include "mlx.h"
+# include "libft.h"
 # include "gc.h"
-# include <fnmatch.h>
-# include <termios.h>
-# include <signal.h>
+# include "utils.h"
+# include "line_utils.h"
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
 # include <fcntl.h>
 
 /* -------------------------------------------------------------------------- */
@@ -51,6 +42,8 @@
 #  define CYAN ""
 #  define WHITE ""
 # endif
+
+# define BUFFER_SIZE 42
 
 // SCALING PARAMETERS
 # define MOVE_STEP			1.0
@@ -105,30 +98,45 @@ typedef enum e_keys
 /*                                 STRUCTURES                                 */
 /* -------------------------------------------------------------------------- */
 
+// GAME CONTEXT STRUCTURE
+typedef struct s_config
+{
+	char	*north_texture;
+	char	*south_texture;
+	char	*west_texture;
+	char	*east_texture;
+
+	int		floor_color;
+	int		ceiling_color;
+
+	char	**map;				// 2D array representing the map
+	int		map_width;
+	int		map_height;
+}	t_config;
+
 // IMAGE BUFFER STRUCTURE
 typedef struct s_image
 {
-	void				*ptr;
-	char				*addr;
-	int					bpp;			// bits per pixel
-	int					line_length;	// bytes per line
-	int					endian;			// byte-order (0 or 1)
-	int					width;
-	int					height;
+	void	*ptr;
+	char	*addr;
+	int		bpp;				// bits per pixel
+	int		line_length;		// bytes per line
+	int		endian;				// byte-order (0 or 1)
+	int		width;
+	int		height;
 }	t_image;
 
 // GAME CONTEXT STRUCTURE
 typedef struct s_cub
 {
-	void				*mlx;
-	void				*win;
-	t_image				img;
-	t_gc				gc;
-	int					width;
-	int					height;
-	int					floor_color;
-	int					ceiling_color;
-	char				**map;			// 2D array representing the map
+	void	*mlx;
+	void	*win;
+	t_image	img;
+	t_gc	gc;
+	int		width;
+	int		height;
+	int		floor_color;
+	int		ceiling_color;
 }	t_cub;
 
 /* -------------------------------------------------------------------------- */
@@ -139,6 +147,22 @@ typedef struct s_cub
 void	init_game(t_cub *data);
 
 /* -------------------------------- Parser ---------------------------------- */
+
+// LECTURE DE FICHIER
+char	**read_file_lines(char *filename);
+void	read_file(const char *filename);
+int		count_lines(const char *filename);
+char	**load_lines(const char *filename, int count);
+
+// PARSING DES LIGNES
+int		parse_line(char *line, t_config *cfg);
+int		parse_color(char *line, t_config *cfg);
+int		parse_map(char **lines, int start_index, t_config *cfg);
+
+// VALIDATION DE LA MAP
+int		is_valid_map(t_config *cfg);
+int		is_map_closed(t_config *cfg);
+int		has_only_valid_chars(char **map);
 
 /* ------------------------------- Executor --------------------------------- */
 

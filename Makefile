@@ -53,8 +53,8 @@ endef
 #                                     CONFIG                                   #
 ################################################################################
 
-NAME =			cub3D
-NAME_BONUS =	cub3D_bonus
+NAME =			cub3d
+NAME_BONUS =	cub3d_bonus
 CC =			gcc
 CFLAGS =		-Wall -Wextra -Werror
 AR =			ar rcs
@@ -78,7 +78,16 @@ MYLIB =			-L $(MYLIB_DIR) -l:my_lib.a
 MLX =			-L $(MLX_DIR) -l:libmlx.a -lXext -lX11 -lm
 
 # Source files
-SRCX =			$(EXEC)initialization.c \
+SRCX =			$(PARSING)main.c \
+        		$(PARSING)read_files.c \
+            	$(PARSING)get_next_line.c \
+            	$(PARSING)utils.c \
+				$(PARSING)line_utils.c \
+            	$(PARSING)parse_lines.c \
+				$(PARSING)parse_color.c \
+				$(PARSING)parse_map.c \
+				$(PARSING)map_validation.c \
+				$(EXEC)initialization.c \
 				$(EXEC)events.c \
 				$(SRC)utils.c \
 
