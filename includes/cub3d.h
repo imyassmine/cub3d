@@ -43,12 +43,11 @@
 #  define WHITE ""
 # endif
 
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE	42
 
-// SCALING PARAMETERS
-# define MOVE_STEP			1.0
-# define ZOOM_FACTOR		1.2
-# define SCALE_ITERATION	5
+// PLAYER MOVEMENT PARAMETERS
+# define WALK_SPEED		1.0
+# define TURN_SPEED		1.2
 
 /* -------------------------------------------------------------------------- */
 /*                                   ENUMS                                    */
@@ -98,45 +97,59 @@ typedef enum e_keys
 /*                                 STRUCTURES                                 */
 /* -------------------------------------------------------------------------- */
 
-// GAME CONTEXT STRUCTURE
+// CONFIGURATION STRUCTURE
 typedef struct s_config
 {
-	char	*north_texture;
-	char	*south_texture;
-	char	*west_texture;
-	char	*east_texture;
+	char		*north_texture;
+	char		*south_texture;
+	char		*west_texture;
+	char		*east_texture;
 
-	int		floor_color;
-	int		ceiling_color;
+	int			floor_color;
+	int			ceiling_color;
 
-	char	**map;				// 2D array representing the map
-	int		map_width;
-	int		map_height;
+	char		**map;				// 2D array representing the map
+	int			map_width;
+	int			map_height;
 }	t_config;
 
 // IMAGE BUFFER STRUCTURE
 typedef struct s_image
 {
-	void	*ptr;
-	char	*addr;
-	int		bpp;				// bits per pixel
-	int		line_length;		// bytes per line
-	int		endian;				// byte-order (0 or 1)
-	int		width;
-	int		height;
+	void		*ptr;
+	char		*addr;
+	int			bpp;				// bits per pixel
+	int			line_length;		// bytes per line
+	int			endian;				// byte-order (0 or 1)
+	int			width;
+	int			height;
 }	t_image;
+
+typedef struct s_player
+{
+	int			forward;
+	int			left;
+	int			backward;
+	int			right;
+	int			turn_left;
+	int			turn_right;
+	double		pos_x;				// Player's X position
+	double		pos_y;
+	double		dir_x;				// Player's direction vector X
+	double		dir_y;
+	double		plane_x;			// Camera plane X (perpendicular to dir)
+	double		plane_y;
+}	t_player;
 
 // GAME CONTEXT STRUCTURE
 typedef struct s_cub
 {
-	void	*mlx;
-	void	*win;
-	t_image	img;
-	t_gc	gc;
-	int		width;
-	int		height;
-	int		floor_color;
-	int		ceiling_color;
+	void		*mlx;
+	void		*win;
+	t_config	cfg;
+	t_image		img;
+	t_player	player;
+	t_gc		gc;
 }	t_cub;
 
 /* -------------------------------------------------------------------------- */
@@ -168,7 +181,11 @@ int		has_only_valid_chars(char **map);
 
 // EVENTS HANDLERS
 int		key_press(int keycode, t_cub *data);
+int		key_release(int keycode, t_cub *data);
 int		close_window(t_cub *data);
+
+// PLAYER MOVEMENT
+void	move_player(t_cub *data, t_player *player);
 
 /* ------------------------------- Utilities -------------------------------- */
 void	print_help(void);

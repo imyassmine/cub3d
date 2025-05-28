@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 21:57:19 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/26 22:30:28 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/28 04:02:20 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,37 @@ int	key_press(int keycode, t_cub *data)
 {
 	if (keycode == ESC)
 		clean_exit(0, data);
-/* 	else if (keycode == SHIFT)
-		data->color.shift += 1;
-	else if (keycode == PLUS)
-		data->f.iteration_max += SCALE_ITERATION;
-	else if (keycode == R)
-		reset_view(&data->f, &data->img);
 	else if (keycode == W || keycode == UP)
-		data->f.view.center_y += (MOVE_STEP / data->f.view.scale);
+		data->player.forward = 1;
 	else if (keycode == S || keycode == DOWN)
-		data->f.view.center_y -= (MOVE_STEP / data->f.view.scale);
-	else if (keycode == A || keycode == LEFT)
-		data->f.view.center_x -= (MOVE_STEP / data->f.view.scale);
-	else if (keycode == D || keycode == RIGHT)
-		data->f.view.center_x += (MOVE_STEP / data->f.view.scale);
-	render(data); */
+		data->player.backward = 1;
+	else if (keycode == A)
+		data->player.left = 1;
+	else if (keycode == D)
+		data->player.right = 1;
+	else if (keycode == LEFT)
+		data->player.turn_left = 1;
+	else if (keycode == RIGHT)
+		data->player.turn_right = 1;
 	return (0);
 }
 
-/* int	key_release(int keycode, t_cub *data)
+int	key_release(int keycode, t_cub *data)
 {
-	if (keycode == SPACE)
-		data->space_key = 0;
+	if (keycode == W || keycode == UP)
+		data->player.forward = 0;
+	else if (keycode == S || keycode == DOWN)
+		data->player.backward = 0;
+	else if (keycode == A)
+		data->player.left = 0;
+	else if (keycode == D)
+		data->player.right = 0;
+	else if (keycode == LEFT)
+		data->player.turn_left = 0;
+	else if (keycode == RIGHT)
+		data->player.turn_right = 0;
 	return (0);
-} */
+}
 
 int	close_window(t_cub *data)
 {

@@ -78,7 +78,8 @@ MYLIB =			-L $(MYLIB_DIR) -l:my_lib.a
 MLX =			-L $(MLX_DIR) -l:libmlx.a -lXext -lX11 -lm
 
 # Source files
-SRCX =			$(PARSING)read_files.c \
+SRCX =			$(SRC)initialization.c \
+				$(PARSING)read_files.c \
             	$(PARSING)get_next_line.c \
             	$(PARSING)utils.c \
 				$(PARSING)line_utils.c \
@@ -86,8 +87,8 @@ SRCX =			$(PARSING)read_files.c \
 				$(PARSING)parse_color.c \
 				$(PARSING)parse_map.c \
 				$(PARSING)map_validation.c \
-				$(EXEC)initialization.c \
 				$(EXEC)events.c \
+				$(EXEC)move.c \
 				$(SRC)utils.c \
 
 SRCS =			$(SRCX) \
