@@ -78,8 +78,7 @@ MYLIB =			-L $(MYLIB_DIR) -l:my_lib.a
 MLX =			-L $(MLX_DIR) -l:libmlx.a -lXext -lX11 -lm
 
 # Source files
-SRCX =			$(PARSING)main.c \
-        		$(PARSING)read_files.c \
+SRCX =			$(PARSING)read_files.c \
             	$(PARSING)get_next_line.c \
             	$(PARSING)utils.c \
 				$(PARSING)line_utils.c \
