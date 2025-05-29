@@ -70,9 +70,5 @@ int	main(int argc, char **argv)
 		exit(0);
 	}
 	init_game(&data);
-	// render(&data);
-	mlx_hook(data.win, KEY_PRESS, KEYPRESSMASK, key_press, &data);
-	mlx_hook(data.win, DESTROY_NOTIFY, STRUCNOTIFYMASK, close_window, &data);
-	mlx_loop(data.mlx);
 	return (0);
 }

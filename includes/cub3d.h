@@ -47,7 +47,7 @@
 
 // PLAYER MOVEMENT PARAMETERS
 # define WALK_SPEED		1.0
-# define TURN_SPEED		1.2
+# define ROTATION_SPEED	1.2			// rotation speed in radians
 
 /* -------------------------------------------------------------------------- */
 /*                                   ENUMS                                    */

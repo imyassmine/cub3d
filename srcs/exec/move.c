@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:02:47 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/28 05:07:14 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:31:50 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	move_fb(t_player *player, t_config *cfg)
 
 	// Si le joueur appuie à la fois sur avancer et reculer, on ne fait rien
 	if (player->forward && player->backward)
-		return;
+		return ;
 	else if (player->forward)
 		dir = 1; // Avancer
 	else if (player->backward)
@@ -42,9 +42,8 @@ static void	move_strafe(t_player *player, t_config *cfg)
 	double	new_y;
 	int		dir;
 
-	// Si le joueur appuie à la fois sur droite et gauche, on ne fait rien
 	if (player->left && player->right)
-		return;
+		return ;
 	else if (player->left)
 		dir = -1;
 	else if (player->right)
@@ -57,39 +56,58 @@ static void	move_strafe(t_player *player, t_config *cfg)
 	if (cfg->map[(int)new_y][(int)player->pos_x] == '0')
 		player->pos_y = new_y;
 }
+/*
+dir_x = dir cos(α)
+dir_y = dir sin(α)
+turn left -> rotation de θ dans le sens antihoraire
+new_dir_x 	= dir cos(α + θ)
+			= dir cos(α) cos(θ) - dir sin(α) sin(θ)
+			= dir_x cos(θ) - dir_y sin(θ)
+new_dir_y 	= dir sin(α + θ)
+ 			= dir sin(α) cos(θ) + dir cos(α) sin(θ)
+			= dir_y cos(θ) + dir_x sin(θ)
+*/
 
 static void	turn_left(t_player *player)
 {
-	double	save_dir_x;
-	double	save_plane_x;
+	double	new_dir_x;
+	double	new_dir_y;
+	double	new_plane_x;
+	double	new_plane_y;
 
-	save_dir_x = player->dir_x;
-	player->dir_x = player->dir_x * cos(-TURN_SPEED)
-		- player->dir_y * sin(-TURN_SPEED);
-	player->dir_y = save_dir_x * sin(-TURN_SPEED)
-		+ player->dir_y * cos(-TURN_SPEED);
-	save_plane_x = player->plane_x;
-	player->plane_x = player->plane_x * cos(-TURN_SPEED)
-		- player->plane_y * sin(-TURN_SPEED);
-	player->plane_y = save_plane_x * sin(-TURN_SPEED)
-		+ player->plane_y * cos(-TURN_SPEED);
+	new_dir_x = player->dir_x * cos(ROTATION_SPEED)
+		- player->dir_y * sin(ROTATION_SPEED);
+	new_dir_y = player->dir_y * cos(ROTATION_SPEED)
+		+ player->dir_x * sin(ROTATION_SPEED);
+	player->dir_x = new_dir_x;
+	player->dir_y = new_dir_y;
+	new_plane_x = player->plane_x * cos(ROTATION_SPEED)
+		- player->plane_y * sin(ROTATION_SPEED);
+	new_plane_y = player->plane_y * cos(ROTATION_SPEED)
+		+ player->plane_x * sin(ROTATION_SPEED);
+	player->plane_x = new_plane_x;
+	player->plane_y = new_plane_y;
 }
 
 static void	turn_right(t_player *player)
 {
-	double	save_dir_x;
-	double	save_plane_x;
+	double	new_dir_x;
+	double	new_dir_y;
+	double	new_plane_x;
+	double	new_plane_y;
 
-	save_dir_x = player->dir_x;
-	player->dir_x = player->dir_x * cos(TURN_SPEED)
-		- player->dir_y * sin(TURN_SPEED);
-	player->dir_y = save_dir_x * sin(TURN_SPEED)
-		+ player->dir_y * cos(TURN_SPEED);
-	save_plane_x = player->plane_x;
-	player->plane_x = player->plane_x * cos(TURN_SPEED)
-		- player->plane_y * sin(TURN_SPEED);
-	player->plane_y = save_plane_x * sin(TURN_SPEED)
-		+ player->plane_y * cos(TURN_SPEED);
+	new_dir_x = player->dir_x * cos(ROTATION_SPEED)
+		+ player->dir_y * sin(ROTATION_SPEED);
+	new_dir_y = player->dir_y * cos(ROTATION_SPEED)
+		- player->dir_x * sin(ROTATION_SPEED);
+	player->dir_x = new_dir_x;
+	player->dir_y = new_dir_y;
+	new_plane_x = player->plane_x * cos(ROTATION_SPEED)
+		+ player->plane_y * sin(ROTATION_SPEED);
+	new_plane_y = player->plane_y * cos(ROTATION_SPEED)
+		- player->plane_x * sin(ROTATION_SPEED);
+	player->plane_x = new_plane_x;
+	player->plane_y = new_plane_y;
 }
 
 void	move_player(t_cub *data, t_player *player)
