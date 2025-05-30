@@ -6,19 +6,20 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 05:22:40 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/26 22:31:44 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/31 00:30:02 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	print_help(void)
+int	print_help(void)
 {
 	ft_putendl_fd("Usage: ./cub3d [map.cub]", STDERR_FILENO);
 	ft_putendl_fd("Options:", STDERR_FILENO);
 	ft_putendl_fd("  --help\t\tDisplay this help message", STDERR_FILENO);
 	ft_putendl_fd("  --save\t\tSave the current game state", STDERR_FILENO);
 	ft_putendl_fd("  --no-color\t\tDisable colored output", STDERR_FILENO);
+	return (0);
 }
 
 void	clean_exit(int status, t_cub *data)
@@ -36,13 +37,13 @@ void	clean_exit(int status, t_cub *data)
 	exit(status);
 }
 
-void	error(const char *error_msg, int status, t_cub *game)
+void	error(const char *error_msg, int status, t_cub *data)
 {
 	ft_putendl_fd(error_msg, STDERR_FILENO);
 	if (status == 2)
 		print_help();
-	if (game)
-		clean_exit(status, game);
+	if (data)
+		clean_exit(status, data);
 	else
 		exit(status);
 }

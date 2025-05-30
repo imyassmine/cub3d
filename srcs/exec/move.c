@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 04:02:47 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/29 19:31:50 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/31 00:48:08 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ static void	move_fb(t_player *player, t_config *cfg)
 	double	new_y;
 	int		dir;
 
-	// Si le joueur appuie à la fois sur avancer et reculer, on ne fait rien
 	if (player->forward && player->backward)
 		return ;
 	else if (player->forward)
-		dir = 1; // Avancer
+		dir = 1;
 	else if (player->backward)
-		dir = -1; // Reculer
-	mv = WALK_SPEED * dir; // Vitesse de déplacement
-	new_x = player->pos_x + player->dir_x * mv; // Nouvelle position en x
+		dir = -1;
+	mv = WALK_SPEED * dir;
+	new_x = player->pos_x + player->dir_x * mv;
 	if (cfg->map[(int)player->pos_y][(int)new_x] == '0')
-		player->pos_x = new_x; // si la case n'est pas un mur
+		player->pos_x = new_x;
 	new_y = player->pos_y + player->dir_y * mv;
 	if (cfg->map[(int)new_y][(int)player->pos_x] == '0')
 		player->pos_y = new_y;
@@ -49,10 +48,10 @@ static void	move_strafe(t_player *player, t_config *cfg)
 	else if (player->right)
 		dir = +1;
 	mv = WALK_SPEED * dir;
-	new_x = player->pos_x + player->plane_x * mv;
+	new_x = player->pos_x - player->dir_y * mv;
 	if (cfg->map[(int)player->pos_y][(int)new_x] == '0')
 		player->pos_x = new_x;
-	new_y = player->pos_y + player->plane_y * mv;
+	new_y = player->pos_y + player->dir_x * mv;
 	if (cfg->map[(int)new_y][(int)player->pos_x] == '0')
 		player->pos_y = new_y;
 }
@@ -68,7 +67,7 @@ new_dir_y 	= dir sin(α + θ)
 			= dir_y cos(θ) + dir_x sin(θ)
 */
 
-static void	turn_left(t_player *player)
+void	turn_right(t_player *player)
 {
 	double	new_dir_x;
 	double	new_dir_y;
@@ -89,7 +88,7 @@ static void	turn_left(t_player *player)
 	player->plane_y = new_plane_y;
 }
 
-static void	turn_right(t_player *player)
+void	turn_left(t_player *player)
 {
 	double	new_dir_x;
 	double	new_dir_y;

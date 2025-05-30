@@ -87,14 +87,19 @@ SRCX =			$(SRC)initialization.c \
 				$(PARSING)parse_color.c \
 				$(PARSING)parse_map.c \
 				$(PARSING)map_validation.c \
-				$(EXEC)events.c \
+				$(EXEC)key_events.c \
+				$(EXEC)mouse_events.c \
 				$(EXEC)move.c \
+				$(EXEC)game.c \
+				$(EXEC)fichier_test_temporaire.c \
+				$(EXEC)brouillon_raycasting.c \
 				$(SRC)utils.c \
 
 SRCS =			$(SRCX) \
 				$(SRC)main.c
 
 SRCS_BONUS =	$(SRCX) \
+				$(EXEC)mouse_events_bonus.c \
 				$(SRC)main_bonus.c
 
 # Converts source file paths to object file paths

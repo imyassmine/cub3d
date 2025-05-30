@@ -43,11 +43,14 @@
 #  define WHITE ""
 # endif
 
-# define BUFFER_SIZE	42
+# define BUFFER_SIZE		42
 
 // PLAYER MOVEMENT PARAMETERS
-# define WALK_SPEED		1.0
-# define ROTATION_SPEED	1.2			// rotation speed in radians
+# define WALK_SPEED			0.04
+# define ROTATION_SPEED		0.04	// rotation speed in radians
+
+// WINDOW PARAMETERS
+# define FOV				0.66	// Field of view in radians (120 degrees)
 
 /* -------------------------------------------------------------------------- */
 /*                                   ENUMS                                    */
@@ -58,8 +61,7 @@ typedef enum e_event_type
 {
 	KEY_PRESS = 2,
 	KEY_RELEASE = 3,
-	BUTTON_PRESS = 4,
-	BUTTON_RELEASE = 5,
+	MOTION_NOTIFY = 6,
 	DESTROY_NOTIFY = 17
 }	t_event_type;
 
@@ -68,8 +70,7 @@ typedef enum e_event_mask
 {
 	KEYPRESSMASK = 1,
 	KEYRELEASEMASK = 2,
-	BUTTONPRESSMASK = 4,
-	BUTTONRELEASEMASK = 8,
+	POINTERMOTIONMASK = 64,
 	STRUCNOTIFYMASK = 131072
 }	t_event_mask;
 
@@ -111,6 +112,10 @@ typedef struct s_config
 	char		**map;				// 2D array representing the map
 	int			map_width;
 	int			map_height;
+
+	int			player_start_x;
+	int			player_start_y;
+	char		player_dir;			// 'N','S','E' ou 'W'
 }	t_config;
 
 // IMAGE BUFFER STRUCTURE
@@ -127,12 +132,12 @@ typedef struct s_image
 
 typedef struct s_player
 {
-	int			forward;
-	int			left;
-	int			backward;
-	int			right;
-	int			turn_left;
-	int			turn_right;
+	bool		forward;
+	bool		left;
+	bool		backward;
+	bool		right;
+	bool		turn_left;
+	bool		turn_right;
 	double		pos_x;				// Player's X position
 	double		pos_y;
 	double		dir_x;				// Player's direction vector X
@@ -149,6 +154,8 @@ typedef struct s_cub
 	t_config	cfg;
 	t_image		img;
 	t_player	player;
+	bool		cursor_visible;
+	int			last_mouse_x;
 	t_gc		gc;
 }	t_cub;
 
@@ -183,12 +190,20 @@ int		has_only_valid_chars(char **map);
 int		key_press(int keycode, t_cub *data);
 int		key_release(int keycode, t_cub *data);
 int		close_window(t_cub *data);
+int		mouse_move(int x, int y, t_cub *data);
 
 // PLAYER MOVEMENT
 void	move_player(t_cub *data, t_player *player);
+void	turn_left(t_player *player);
+void	turn_right(t_player *player);
+
+// RAY CASTING
+int		game_loop(t_cub *data);
+void	render_walls(t_cub *data);
+void	fontion_temporaire(const char *filename, t_cub *data);
 
 /* ------------------------------- Utilities -------------------------------- */
-void	print_help(void);
+int		print_help(void);
 void	clean_exit(int status, t_cub *data);
 void	error(const char *error_msg, int status, t_cub *game);
 #endif

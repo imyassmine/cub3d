@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   events.c                                           :+:      :+:    :+:   */
+/*   key_events.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 21:57:19 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/28 04:02:20 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/30 22:56:22 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ int	key_press(int keycode, t_cub *data)
 		data->player.turn_left = 1;
 	else if (keycode == RIGHT)
 		data->player.turn_right = 1;
+	else if (keycode == C)
+	{
+		if (data->cursor_visible)
+			mlx_mouse_hide(data->mlx, data->win);
+		else
+			mlx_mouse_show(data->mlx, data->win);
+		data->cursor_visible = !data->cursor_visible;
+	}
 	return (0);
 }
 
