@@ -52,6 +52,12 @@
 // WINDOW PARAMETERS
 # define FOV				0.66	// Field of view in radians (120 degrees)
 
+// MINIMAP PARAMETERS
+# define OFF_X				10		// Offset X for minimap
+# define OFF_Y				10		// Offset Y for minimap
+# define MINIMAP_WIDTH		300		// Width of the minimap
+# define MINIMAP_HEIGHT		300		// Height of the minimap
+
 /* -------------------------------------------------------------------------- */
 /*                                   ENUMS                                    */
 /* -------------------------------------------------------------------------- */
@@ -128,6 +134,7 @@ typedef struct s_image
 	int			endian;				// byte-order (0 or 1)
 	int			width;
 	int			height;
+	int			color;
 }	t_image;
 
 typedef struct s_player
@@ -156,6 +163,7 @@ typedef struct s_cub
 	t_player	player;
 	bool		cursor_visible;
 	int			last_mouse_x;
+	int			minimap_scale;
 	t_gc		gc;
 }	t_cub;
 
@@ -197,10 +205,16 @@ void	move_player(t_cub *data, t_player *player);
 void	turn_left(t_player *player);
 void	turn_right(t_player *player);
 
-// RAY CASTING
+// GAME LOOP
+void	set_color_pixel(t_image *img, int x, int y);
 int		game_loop(t_cub *data);
+
+// RAY CASTING
 void	render_walls(t_cub *data);
 void	fontion_temporaire(const char *filename, t_cub *data);
+
+// MINIMAP
+void	draw_minimap(t_cub *cub);
 
 /* ------------------------------- Utilities -------------------------------- */
 int		print_help(void);

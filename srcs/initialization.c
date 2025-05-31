@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:35:42 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/31 00:27:13 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/31 21:28:29 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,10 @@ void	init_game(t_cub *data)
 	// Données du parser (ci-dessous valeurs temporaires)
 	data->cfg.ceiling_color = 0x0000FF;
 	data->cfg.floor_color = 0x8B4513;
+	if (MINIMAP_WIDTH / data->cfg.map_width
+		< MINIMAP_HEIGHT / data->cfg.map_height)
+		data->minimap_scale = MINIMAP_WIDTH / data->cfg.map_width;
+	else
+		data->minimap_scale = MINIMAP_HEIGHT / data->cfg.map_height;
 	init_player(&data->player, &data->cfg);
 }

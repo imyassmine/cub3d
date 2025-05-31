@@ -6,16 +6,22 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 23:58:27 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/31 00:42:09 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/05/31 21:38:59 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	set_color_pixel(t_image *img, int x, int y)
+{
+	int	pixel;
+
+	pixel = (y * img->line_length) + (x * (img->bpp / 8));
+	*(unsigned int *)(img->addr + pixel) = img->color;
+}
+
 static void	draw_floor_ceiling(t_image *img, int ceiling_color, int floor_color)
 {
-	int	*line;
-	int	color;
 	int	x;
 	int	y;
 
@@ -23,13 +29,12 @@ static void	draw_floor_ceiling(t_image *img, int ceiling_color, int floor_color)
 	while (++y < img->height)
 	{
 		if (y < img->height / 2)
-			color = ceiling_color;
+			img->color = ceiling_color;
 		else
-			color = floor_color;
-		line = (int *)img->addr + y * (img->line_length / 4);
+			img->color = floor_color;
 		x = -1;
 		while (++x < img->width)
-			line[x] = color;
+			set_color_pixel(img, x, y);
 	}
 }
 
@@ -39,6 +44,7 @@ int	game_loop(t_cub *data)
 	draw_floor_ceiling(&data->img, data->cfg.ceiling_color,
 		data->cfg.floor_color);
 	render_walls(data);
+	draw_minimap(data);
 	mlx_put_image_to_window(data->mlx, data->win,
 		data->img.ptr, 0, 0);
 	return (0);
