@@ -75,6 +75,7 @@ int	main(int argc, char **argv)
 	mlx_hook(data.win, KEY_PRESS, KEYPRESSMASK, key_press, &data);
 	mlx_hook(data.win, KEY_RELEASE, KEYRELEASEMASK, key_release, &data);
 	mlx_hook(data.win, MOTION_NOTIFY, POINTERMOTIONMASK, mouse_move, &data);
+	// mlx_hook(data.win, CONFIGURE_NOTIFY, STRUCNOTIFYMASK, resize_window, &data);
 	mlx_hook(data.win, DESTROY_NOTIFY, STRUCNOTIFYMASK, close_window, &data);
 	mlx_loop_hook(data.mlx, game_loop, &data);
 	mlx_loop(data.mlx);

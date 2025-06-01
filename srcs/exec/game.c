@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 23:58:27 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/31 21:38:59 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:42:34 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_color_pixel(t_image *img, int x, int y)
 {
 	int	pixel;
 
-	pixel = (y * img->line_length) + (x * (img->bpp / 8));
+	pixel = (y * img->line_length) + (x * img->bpp / 8);
 	*(unsigned int *)(img->addr + pixel) = img->color;
 }
 
@@ -44,7 +44,12 @@ int	game_loop(t_cub *data)
 	draw_floor_ceiling(&data->img, data->cfg.ceiling_color,
 		data->cfg.floor_color);
 	render_walls(data);
-	draw_minimap(data);
+	if (data->show_cursor == false)
+		mlx_mouse_hide(data->mlx, data->win);
+	else
+		mlx_mouse_show(data->mlx, data->win);
+	if (data->show_minimap == true)
+		draw_minimap(data);
 	mlx_put_image_to_window(data->mlx, data->win,
 		data->img.ptr, 0, 0);
 	return (0);

@@ -47,9 +47,11 @@
 
 // PLAYER MOVEMENT PARAMETERS
 # define WALK_SPEED			0.04
-# define ROTATION_SPEED		0.04	// rotation speed in radians
+# define ANGULAR_SPEED		0.04	// Rotation speed in radians
 
 // WINDOW PARAMETERS
+# define DEFAULT_WIN_WIDTH	1500	// Default width of the window
+# define DEFAULT_WIN_HEIGHT	800		// Default height of the window
 # define FOV				0.66	// Field of view in radians (120 degrees)
 
 // MINIMAP PARAMETERS
@@ -68,7 +70,8 @@ typedef enum e_event_type
 	KEY_PRESS = 2,
 	KEY_RELEASE = 3,
 	MOTION_NOTIFY = 6,
-	DESTROY_NOTIFY = 17
+	DESTROY_NOTIFY = 17,
+	CONFIGURE_NOTIFY = 22,
 }	t_event_type;
 
 // EVENT MASKS ENUM
@@ -83,13 +86,10 @@ typedef enum e_event_mask
 // KEY CODES ENUM
 typedef enum e_keys
 {
-	KEY_SPACE = 32,
-	PLUS = 61,
 	A = 97,
 	C = 99,
 	D = 100,
-	H = 104,
-	R = 114,
+	M = 109,
 	S = 115,
 	W = 119,
 	ESC = 65307,
@@ -97,7 +97,6 @@ typedef enum e_keys
 	UP = 65362,
 	RIGHT = 65363,
 	DOWN = 65364,
-	SHIFT = 65505
 }	t_keys;
 
 /* -------------------------------------------------------------------------- */
@@ -119,9 +118,7 @@ typedef struct s_config
 	int			map_width;
 	int			map_height;
 
-	int			player_start_x;
-	int			player_start_y;
-	char		player_dir;			// 'N','S','E' ou 'W'
+	char		player_start_dir;	// 'N','S','E' ou 'W'
 }	t_config;
 
 // IMAGE BUFFER STRUCTURE
@@ -161,7 +158,8 @@ typedef struct s_cub
 	t_config	cfg;
 	t_image		img;
 	t_player	player;
-	bool		cursor_visible;
+	bool		show_cursor;
+	bool		show_minimap;
 	int			last_mouse_x;
 	int			minimap_scale;
 	t_gc		gc;
@@ -199,11 +197,11 @@ int		key_press(int keycode, t_cub *data);
 int		key_release(int keycode, t_cub *data);
 int		close_window(t_cub *data);
 int		mouse_move(int x, int y, t_cub *data);
+// int		resize_window(int new_w, int new_h, t_cub *data);
 
 // PLAYER MOVEMENT
 void	move_player(t_cub *data, t_player *player);
-void	turn_left(t_player *player);
-void	turn_right(t_player *player);
+void	turn(t_player *player, double angle);
 
 // GAME LOOP
 void	set_color_pixel(t_image *img, int x, int y);

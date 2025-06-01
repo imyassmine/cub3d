@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:35:42 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/05/31 21:28:29 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/06/01 19:55:11 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 static void	init_player(t_player *player, t_config *cfg)
 {
-	player->pos_x = cfg->player_start_x + 0.5;
-	player->pos_y = cfg->player_start_y + 0.5;
-	if (cfg->player_dir == 'N')
+	if (cfg->player_start_dir == 'N')
 		player->dir_y = -1.0;
-	else if (cfg->player_dir == 'S')
+	else if (cfg->player_start_dir == 'S')
 		player->dir_y = 1.0;
-	else if (cfg->player_dir == 'E')
+	else if (cfg->player_start_dir == 'E')
 		player->dir_x = 1.0;
-	else if (cfg->player_dir == 'W')
+	else if (cfg->player_start_dir == 'W')
 		player->dir_x = -1.0;
 	player->plane_x = -player->dir_y * FOV;
 	player->plane_y = player->dir_x * FOV;
@@ -33,8 +31,8 @@ void	init_game(t_cub *data)
 	data->mlx = mlx_init();
 	if (!data->mlx)
 		error("Failed to initialize MLX library", EXIT_FAILURE, NULL);
-	data->img.width = 1500;
-	data->img.height = 800;
+	data->img.width = DEFAULT_WIN_WIDTH;
+	data->img.height = DEFAULT_WIN_HEIGHT;
 	data->win = mlx_new_window(data->mlx,
 			data->img.width, data->img.height, "Cub3D");
 	if (!data->win)
@@ -45,6 +43,8 @@ void	init_game(t_cub *data)
 		error("Failed to create image", EXIT_FAILURE, data);
 	data->img.addr = mlx_get_data_addr(data->img.ptr, &data->img.bpp,
 			&data->img.line_length, &data->img.endian);
+	data->show_cursor = true;
+	data->show_minimap = true;
 	// Données du parser (ci-dessous valeurs temporaires)
 	data->cfg.ceiling_color = 0x0000FF;
 	data->cfg.floor_color = 0x8B4513;

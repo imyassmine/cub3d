@@ -21,9 +21,9 @@ static void lst_to_map(t_cub *data, t_list *lst, int height, int width)
 		for (int j = 0; buf[j]; j++)
 			if (ft_strchr("NSEW", buf[j]))
 			{
-				data->cfg.player_start_x = j;
-				data->cfg.player_start_y = i;
-				data->cfg.player_dir     = buf[j];
+				data->player.pos_x = j + 0.5;
+				data->player.pos_y = i + 0.5;
+				data->cfg.player_start_dir     = buf[j];
 				buf[j] = '0';
 			}
 		lst = lst->next;

@@ -1,6 +1,10 @@
+# Ignorer la documentation
+LICENSE
+*.pdf
+
 # Ignorer les objets et binaires
 *.o
 cub3d
 
-# Ignorer le dossier libft
-libft/
+# Ignorer les fichiers de configuration de VSCode
+.vscode/
