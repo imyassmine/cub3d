@@ -30,8 +30,12 @@ int is_valid_map(t_config *cfg)
 		printf("Error: la map doit contenir exactement 1 joueur\n");
 		return (0);
 	}
+    if (has_empty_line_inside(cfg->map))
+	    return (0);
 	if (!has_only_valid_chars(cfg->map))
 		return (0);
+    if (!is_valid_open_spaces(cfg->map))
+	    return (0);
 	if (!is_map_closed(cfg))
 		return (0);
 	return (1);
@@ -112,3 +116,4 @@ int has_only_valid_chars(char **map)
 	}
 	return (1);
 }
+

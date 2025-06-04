@@ -2,30 +2,34 @@
 
 int	parse_line(char *line, t_config *cfg)
 {
-	int	type;
+	char	**tokens;
 
-	// on identifie le type de la ligne
-	type = get_line_type(line);
-	if (type == 0)
-		return (0); // ligne vide → on l'ignore
-	else if (type == 1)
+	if (is_empty_line(line))
+		return (0);
+	tokens = ft_split(line, ' ');
+	if (!tokens || !tokens[0] || !tokens[1])
 	{
-		if (ft_strncmp(line, "NO ", 3) == 0)
-			cfg->north_texture = ft_strdup(line + 3);
-		else if (ft_strncmp(line, "SO ", 3) == 0)
-			cfg->south_texture = ft_strdup(line + 3);
-		else if (ft_strncmp(line, "WE ", 3) == 0)
-			cfg->west_texture = ft_strdup(line + 3);
-		else if (ft_strncmp(line, "EA ", 3) == 0)
-			cfg->east_texture = ft_strdup(line + 3);
+		free_split(tokens);
+		return (1); // ligne invalide
 	}
-	else if (type == 2)
+	if (ft_strcmp(tokens[0], "NO") == 0)
+		cfg->north_texture = ft_strdup(tokens[1]);
+	else if (ft_strcmp(tokens[0], "SO") == 0)
+		cfg->south_texture = ft_strdup(tokens[1]);
+	else if (ft_strcmp(tokens[0], "WE") == 0)
+		cfg->west_texture = ft_strdup(tokens[1]);
+	else if (ft_strcmp(tokens[0], "EA") == 0)
+		cfg->east_texture = ft_strdup(tokens[1]);
+	else if (ft_strcmp(tokens[0], "F") == 0 || ft_strcmp(tokens[0], "C") == 0)
 	{
-		// ligne de couleur (F ou C)
-		if (parse_color(line, cfg) != 0)
-			return (1);
+		free_split(tokens);
+		return (parse_color(line, cfg)); // on parse à partir de la ligne brute
 	}
-	else if (type == 3)
-		return (1); // début de map → on arrête le parsing ici
+	else
+	{
+		free_split(tokens);
+		return (1); // ligne non reconnue
+	}
+	free_split(tokens);
 	return (0);
 }

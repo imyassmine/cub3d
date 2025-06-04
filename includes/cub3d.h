@@ -15,6 +15,13 @@
 // STRUCTURES
 // ─────────────────────────────────────────────────────────────
 
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	char	direction;
+}	t_player;
+
 typedef struct s_config
 {
 	char	*north_texture;
@@ -28,7 +35,10 @@ typedef struct s_config
 	char	**map;
 	int		map_width;
 	int		map_height;
+
+	t_player	player;
 }	t_config;
+
 
 // ─────────────────────────────────────────────────────────────
 // LECTURE DE FICHIER
@@ -54,5 +64,8 @@ int		parse_map(char **lines, int start_index, t_config *cfg);
 int		is_valid_map(t_config *cfg);
 int		is_map_closed(t_config *cfg);
 int		has_only_valid_chars(char **map);
+int     is_valid_open_spaces(char **map);
+int     has_empty_line_inside(char **amp);
+int		init_player(t_config *cfg);
 
 #endif

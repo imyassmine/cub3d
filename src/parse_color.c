@@ -1,13 +1,13 @@
 #include "cub3d.h"
 
 /* NOTES:
-On veut transformer R(red), G(green), B(blue) en une seule valeur binaire.asm
+On veut transformer R(red), G(green), B(blue) en une seule valeur binaire.
 Exple:
 r = 220 -> 0xDC
 g = 100 -> 0x64
 b = 0 -> 0x00
 
-Chaque composante : un nombre entre 0 et 255, sur 1 octet (8 bits).
+Chaque composante= un nombre entre 0 et 255, sur 1 octet (8 bits).
 Donc ici par exemple on veut que RED soit décalé de 16 bits (r << 16),
 GREEN de 8 et BLUE ne bouge pas.
 

@@ -18,6 +18,9 @@ SRC         = $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/parse_color.c \
 			  $(SRC_DIR)/parse_map.c \
 			  $(SRC_DIR)/map_validation.c \
+			  $(SRC_DIR)/check_open_spaces.c \
+			  $(SRC_DIR)/map_format.c \
+			  $(SRC_DIR)/player_init.c \
 
 OBJ         = $(SRC:.c=.o)
 

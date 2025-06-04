@@ -31,32 +31,36 @@ int is_color_line(char *line)
 	return (0); 
 }
 
-int is_map_line(char *line)
+int	is_map_line(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
+	if (!line || line[0] == '\0') // sécurité ajoutée
+		return (0);
 	while (line[i])
-	{
-		if (line[i] != '0' && line[i] != '1'
+    {
+        printf("caractère[%d] = '%c' (%d)\n", i, line[i], (unsigned char)line[i]); //debug
+        if (line[i] != '0' && line[i] != '1'
 			&& line[i] != 'N' && line[i] != 'S'
 			&& line[i] != 'E' && line[i] != 'W'
-			&& line[i] != ' ')
+			&& line[i] != ' ' && line[i] != '\n' && line[i] != '\r')
 			return (0);
-		i++;
-	}
+        i++;
+    }
 	return (1);
 }
 
-int get_line_type(char *line)
+int	get_line_type(char *line)
 {
 	if (is_empty_line(line))
 		return (0);
-	else if (is_texture_line(line))
+	if (is_texture_line(line))
 		return (1);
-	else if (is_color_line(line))
+	if (is_color_line(line))
 		return (2);
-	else if (is_map_line(line))
+	if (is_map_line(line))
 		return (3);
 	return (-1);
 }
+

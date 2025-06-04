@@ -9,7 +9,7 @@ int	main(void)
 
 	i = 0;
 	start = 0;
-	
+
 	// initialise cfg à 0 (important pour éviter les valeurs aléatoires)
 	ft_memset(&cfg, 0, sizeof(t_config));
 
@@ -19,21 +19,39 @@ int	main(void)
 	// analyser chaque ligne jusqu'à trouver le début de la map
 	while (lines[i])
 	{
+		printf("ligne brute: |%s|\n", lines[i]);
 		int type = get_line_type(lines[i]);
 
 		// debug temporaire : afficher le type de chaque ligne
 		printf("ligne %d: type %d\n", i, type);
 
-		if (parse_line(lines[i], &cfg) == 1) // ligne inconnue = début de map
+		if (type == 0)
+			i++;
+		else if (type == 1)
+		{
+			parse_line(lines[i], &cfg);
+			i++;
+		}
+		else if (type == 2)
+		{
+			parse_color(lines[i], &cfg);
+			i++;
+		}
+		else if (type == 3)
 		{
 			start = i;
 			break ;
 		}
-		i++;
+		else if (type == -1)
+		{
+			printf("Erreur: ligne inconnue ou invalide\n");
+			exit(1);
+		}
 	}
 
 	// ici on ajoute le parsing de la map
 	parse_map(lines, start, &cfg);
+	init_player(&cfg);
 
 	// valider la map (joueur, fermeture, etc)
 	if (!is_valid_map(&cfg))
@@ -42,7 +60,7 @@ int	main(void)
 		return (1);
 	}
 
-	// afficher ce qui a été lu
+	// pour debug car je n'ai pas encore la partie graphique
 	printf("North:  %s\n", cfg.north_texture);
 	printf("South:  %s\n", cfg.south_texture);
 	printf("West:   %s\n", cfg.west_texture);
