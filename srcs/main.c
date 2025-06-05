@@ -1,64 +1,64 @@
 #include "cub3d.h"
 
-/*
-int	main(void)
-{
-	t_config	cfg;
-	char		**lines;
-	int			i;
-	int			start;
 
-	i = 0;
-	start = 0;
+// int	main(void)
+// {
+// 	t_config	cfg;
+// 	char		**lines;
+// 	int			i;
+// 	int			start;
 
-	// initialise cfg à 0 (important pour éviter les valeurs aléatoires)
-	ft_memset(&cfg, 0, sizeof(t_config));
+// 	i = 0;
+// 	start = 0;
 
-	// lire le fichier map.cub
-	lines = read_file_lines("map.cub");
+// 	// initialise cfg à 0 (important pour éviter les valeurs aléatoires)
+// 	ft_memset(&cfg, 0, sizeof(t_config));
 
-	// analyser chaque ligne jusqu'à trouver le début de la map
-	while (lines[i])
-	{
-		int type = get_line_type(lines[i]);
+// 	// lire le fichier map.cub
+// 	lines = read_file_lines("map.cub");
 
-		// debug temporaire : afficher le type de chaque ligne
-		printf("ligne %d: type %d\n", i, type);
+// 	// analyser chaque ligne jusqu'à trouver le début de la map
+// 	while (lines[i])
+// 	{
+// 		int type = get_line_type(lines[i]);
 
-		if (parse_line(lines[i], &cfg) == 1) // ligne inconnue = début de map
-		{
-			start = i;
-			break ;
-		}
-		i++;
-	}
+// 		// debug temporaire : afficher le type de chaque ligne
+// 		printf("ligne %d: type %d\n", i, type);
 
-	// ici on ajoute le parsing de la map
-	parse_map(lines, start, &cfg);
+// 		if (parse_line(lines[i], &cfg) == 1) // ligne inconnue = début de map
+// 		{
+// 			start = i;
+// 			break ;
+// 		}
+// 		i++;
+// 	}
 
-	// valider la map (joueur, fermeture, etc)
-	if (!is_valid_map(&cfg))
-	{
-		printf("Map invalide.\n");
-		return (1);
-	}
+// 	// ici on ajoute le parsing de la map
+// 	parse_map(lines, start, &cfg);
 
-	// afficher ce qui a été lu
-	printf("North:  %s\n", cfg.north_texture);
-	printf("South:  %s\n", cfg.south_texture);
-	printf("West:   %s\n", cfg.west_texture);
-	printf("East:   %s\n", cfg.east_texture);
+// 	// valider la map (joueur, fermeture, etc)
+// 	if (!is_valid_map(&cfg))
+// 	{
+// 		printf("Map invalide.\n");
+// 		return (1);
+// 	}
 
-	printf("Floor:  0x%06X\n", cfg.floor_color);
-	printf("Ceil:   0x%06X\n", cfg.ceiling_color);
+// 	// afficher ce qui a été lu
+// 	printf("North:  %s\n", cfg.north_texture);
+// 	printf("South:  %s\n", cfg.south_texture);
+// 	printf("West:   %s\n", cfg.west_texture);
+// 	printf("East:   %s\n", cfg.east_texture);
 
-	printf("Map height: %d\n", cfg.map_height);
-	printf("Map width:  %d\n", cfg.map_width);
+// 	printf("Floor:  0x%06X\n", cfg.floor_color);
+// 	printf("Ceil:   0x%06X\n", cfg.ceiling_color);
 
-	// plus tard : free les lignes et textures
-	return (0);
-}
-*/
+// 	printf("Map height: %d\n", cfg.map_height);
+// 	printf("Map width:  %d\n", cfg.map_width);
+
+// 	// plus tard : free les lignes et textures
+// 	return (0);
+// }
+
 
 int	main(int argc, char **argv)
 {

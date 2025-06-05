@@ -6,11 +6,40 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:35:42 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/06/01 19:55:11 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:19:09 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	init_textures(t_cub *data)
+{
+	// Données du parser
+	data->cfg.north_texture = "./textures/north.xpm";
+	data->cfg.south_texture = "./textures/south.xpm";
+	data->cfg.east_texture = "./textures/east.xpm";
+	data->cfg.west_texture = "./textures/west.xpm";
+
+	char	*paths[4] = {
+		data->cfg.north_texture,
+		data->cfg.south_texture,
+		data->cfg.east_texture,
+		data->cfg.west_texture
+	};
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		data->texture[i].ptr = mlx_xpm_file_to_image(data->mlx, paths[i],
+				&data->texture[i].width, &data->texture[i].height);
+		if (!data->texture[i].ptr)
+			error("Failed to load texture image", EXIT_FAILURE, data);
+		data->texture[i].addr = mlx_get_data_addr(data->texture[i].ptr,
+				&data->texture[i].bpp, &data->texture[i].line_length,
+				&data->texture[i].endian);
+	}
+}
 
 static void	init_player(t_player *player, t_config *cfg)
 {
@@ -53,5 +82,7 @@ void	init_game(t_cub *data)
 		data->minimap_scale = MINIMAP_WIDTH / data->cfg.map_width;
 	else
 		data->minimap_scale = MINIMAP_HEIGHT / data->cfg.map_height;
+
 	init_player(&data->player, &data->cfg);
+	init_textures(data);
 }

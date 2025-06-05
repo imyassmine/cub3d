@@ -6,7 +6,7 @@
 /*   By: yaabdall <yaabdall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 23:58:27 by yaabdall          #+#    #+#             */
-/*   Updated: 2025/06/01 21:42:34 by yaabdall         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:14:38 by yaabdall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	set_color_pixel(t_image *img, int x, int y)
 	int	pixel;
 
 	pixel = (y * img->line_length) + (x * img->bpp / 8);
-	*(unsigned int *)(img->addr + pixel) = img->color;
+	 *(unsigned int *)(img->addr + pixel) = img->color;
 }
 
 static void	draw_floor_ceiling(t_image *img, int ceiling_color, int floor_color)

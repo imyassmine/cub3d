@@ -92,7 +92,7 @@ SRCX =			$(SRC)initialization.c \
 				$(EXEC)move.c \
 				$(EXEC)game.c \
 				$(EXEC)fichier_test_temporaire.c \
-				$(EXEC)brouillon_raycasting.c \
+				$(EXEC)raycasting.c \
 				$(EXEC)minimap_bonus.c \
 				$(SRC)utils.c \
 

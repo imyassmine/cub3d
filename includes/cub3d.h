@@ -43,7 +43,8 @@
 #  define WHITE ""
 # endif
 
-# define BUFFER_SIZE		42
+// BUFFER SIZE
+# define BUFFER_SIZE	1024	// Size of the buffer for reading files
 
 // PLAYER MOVEMENT PARAMETERS
 # define WALK_SPEED			0.04
@@ -80,7 +81,7 @@ typedef enum e_event_mask
 	KEYPRESSMASK = 1,
 	KEYRELEASEMASK = 2,
 	POINTERMOTIONMASK = 64,
-	STRUCNOTIFYMASK = 131072
+	STRUCNOTIFYMASK = 131072,
 }	t_event_mask;
 
 // KEY CODES ENUM
@@ -98,6 +99,15 @@ typedef enum e_keys
 	RIGHT = 65363,
 	DOWN = 65364,
 }	t_keys;
+
+// DIRECTION ENUM
+typedef enum e_direction
+{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+}	t_direction;
 
 /* -------------------------------------------------------------------------- */
 /*                                 STRUCTURES                                 */
@@ -131,7 +141,7 @@ typedef struct s_image
 	int			endian;				// byte-order (0 or 1)
 	int			width;
 	int			height;
-	int			color;
+	unsigned int			color;
 }	t_image;
 
 typedef struct s_player
@@ -157,6 +167,7 @@ typedef struct s_cub
 	void		*win;
 	t_config	cfg;
 	t_image		img;
+	t_image		texture[4];
 	t_player	player;
 	bool		show_cursor;
 	bool		show_minimap;
