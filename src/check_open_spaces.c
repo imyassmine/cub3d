@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-//Vérifie que chaque case '0' est bien entourée (pas de vide autour).
+//vérifie que chaque case '0' est bien entourée (càd pas de vide autour)
 int	is_valid_open_spaces(char **map)
 {
 	int	i = 0, j;

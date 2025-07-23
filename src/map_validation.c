@@ -41,6 +41,7 @@ int is_valid_map(t_config *cfg)
 	return (1);
 }
 
+/*
 static int is_full_wall_line(char *line)
 {
     int i;
@@ -54,43 +55,7 @@ static int is_full_wall_line(char *line)
     }
     return (1);
 }
-
-int is_map_closed(t_config *cfg)
-{
-    int i;
-    int len;
-    char *line;
-
-    i = 0;
-
-    //1. vérifier le bord du haut
-    if (!is_full_wall_line(cfg->map[0]))
-    {
-        printf("Error: ligne du haut non fermée\n");
-        return (0);
-    }
-
-    //2. vérifier le bord du bas
-    if (!is_full_wall_line(cfg->map[cfg->map_height -1]))
-    {
-        printf("Error: ligne du bad non fermée\n");
-        return (0);
-    }
-
-    //3. vérifier côté gauche et côté droit
-    while (cfg->map[i])
-    {
-        line = cfg->map[i];
-        len = ft_strlen(line);
-        if (line[0] != '1' || line[len - 1] != '1')
-        {
-			printf("Error: ligne %d non fermée (gauche ou droite)\n", i);
-            return (0);
-        }
-        i++;
-    }
-    return (1);
-}
+	*/
 
 int has_only_valid_chars(char **map)
 {

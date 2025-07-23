@@ -1,81 +1,78 @@
 #include "cub3d.h"
 
-void read_file(const char *filename)
-{
-    int fd;
-    char buffer[BUFFER_SIZE + 1];
-    ssize_t bytes;
+#define MAX_FILE_LINES 2048
 
-    fd = open(filename, O_RDONLY);
-    if (fd < 0)
-    {
-        perror("error");
-        exit(1);
-    }
-    while ((bytes = read(fd, buffer, BUFFER_SIZE)) > 0)
-    {
-        buffer[bytes] = '\0';
-        write(1, buffer, bytes);
-    }
-    if (bytes < 0)
-    {
-        perror("error");
-        close(fd);
-        exit(1);
-    }
-    close(fd);
+// en fait celle-ci sera sûrement à enlever, elle était utile pour supprimer 
+// le '\r' qui vient de fichiers créés sous Windows (mon pc perso)
+void	remove_carriage_return(char *line)
+{
+	int	i = 0;
+
+	while (line[i])
+	{
+		if (line[i] == '\r')
+			line[i] = '\0';
+		i++;
+	}
 }
 
-int	count_lines(const char *filename)
+// lire et afficher un fichier sur la sortie standard
+void	read_file(const char *filename)
 {
 	int		fd;
-	char	*line;
-	int		count;
+	char	buffer[BUFFER_SIZE + 1];
+	ssize_t	bytes;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		exit_error("open failed", 1);
-	count = 0;
-	line = get_next_line(fd);
-	while (line)
 	{
-		free(line);
-		count++;
-		line = get_next_line(fd);
+		perror("error");
+		exit(1);
+	}
+	while ((bytes = read(fd, buffer, BUFFER_SIZE)) > 0)
+	{
+		buffer[bytes] = '\0';
+		write(1, buffer, bytes);
+	}
+	if (bytes < 0)
+	{
+		perror("error");
+		close(fd);
+		exit(1);
 	}
 	close(fd);
-	return (count);
 }
 
-char	**load_lines(const char *filename, int count)
+char	**read_file_lines(const char *filename)
 {
 	int		fd;
+	char	*line;
 	char	**lines;
 	int		i;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		exit_error("re-open failed", 1);
-	lines = malloc(sizeof(char *) * (count + 1));
-	if (!lines)
-		exit_error("malloc failed", 1);
-	i = 0;
-	while (i < count)
 	{
-		lines[i] = get_next_line(fd);
-		if (!lines[i])
-			break ;
-		i++;
+		perror("Erreur ouverture fichier");
+		return (NULL);
+	}
+	lines = malloc(sizeof(char *) * (MAX_FILE_LINES + 1));
+	if (!lines)
+		return (close(fd), NULL);
+	i = 0;
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		remove_carriage_return(line);
+		lines[i++] = line;
+		if (i >= MAX_FILE_LINES)
+		{
+			printf("Erreur: fichier trop long\n");
+			lines[i] = NULL;
+			close(fd);
+			return (lines);
+		}
 	}
 	lines[i] = NULL;
 	close(fd);
 	return (lines);
-}
-
-char	**read_file_lines(char *filename)
-{
-	int		count;
-
-	count = count_lines(filename);
-	return (load_lines(filename, count));
 }

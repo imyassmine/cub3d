@@ -49,3 +49,19 @@ int ft_strcmp(char *s1, char *s2)
     }
     return (s1[i] - s2[i]); 
 }
+
+
+void	error(const char *error_msg, int status)
+{
+	int	len;
+
+	len = 0;
+	while (error_msg[len])
+		len++;
+	write(2, "Error\n", 6);
+	write(2, error_msg, len);
+	write(2, "\n", 1);
+	exit(status);
+}
+
+
