@@ -1,0 +1,21 @@
+11111
+10001
+10S01
+10001
+10001
+10001
+11001
+10001
+10001
+10001
+10001
+10001
+11111
+
+NO sprites/north.xpm
+SO sprites/south.xpm
+WE sprites/west.xpm
+EA sprites/east.xpm
+
+F 20,20,20
+C 200,200,200
