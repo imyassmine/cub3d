@@ -25,7 +25,7 @@ void	clean_exit(int status, t_cub *data)
 void	error(const char *error_msg, int status, t_cub *data)
 {
 	ft_putstr_fd("Error: ", STDERR_FILENO);
-	ft_putendl_fd(error_msg, STDERR_FILENO);
+	ft_putendl_fd((char *)error_msg, STDERR_FILENO);
 	if (status == 2)
 		print_help();
 	if (data)

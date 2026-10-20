@@ -20,7 +20,7 @@ NAME =			libft.a
 CC =			cc
 CFLAGS =		-Wall -Wextra -Werror -I include
 
-SRC_DIRS =		libft/src/ get_next_line/src/ ft_printf/src/
+SRC_DIRS =		libft/src/ get_next_line/src/ ft_printf/src/ garbage_collector/src/
 OBJ_DIR =		obj/
 
 SRC =			$(foreach d,$(SRC_DIRS),$(wildcard $(d)*.c))
