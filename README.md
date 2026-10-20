@@ -88,5 +88,5 @@ Single-player, software-rendered walkthrough: no sprites, enemies, sound or
 level editor. X11 is required (Linux, or WSL with an X server).
 
 ---
-
-42 Paris curriculum project · solo · Yassmine Abdallah ([@imyassmine](https://github.com/imyassmine))
+*Built at [42 Paris](https://42.fr) by [Yassmine Abdallah (@imyassmine)](https://github.com/imyassmine)
+and cldalmaz.*
